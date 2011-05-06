@@ -32,6 +32,9 @@ ActiveRecord::Schema.define(:version => 20110505173308) do
     t.datetime "updated_at"
   end
 
+  add_index "login_attempts", ["created_at"], :name => "index_login_attempts_on_created_at"
+  add_index "login_attempts", ["ip"], :name => "index_login_attempts_on_ip"
+
   create_table "people", :force => true do |t|
     t.string   "name",       :null => false
     t.string   "pin_hash",   :null => false
