@@ -10,7 +10,7 @@ class Withdrawal < ActiveRecord::Base
   
   belongs_to :account  
     
-  before_save :perform_withdrawal!, :unless => lambda {self.account.nil?}
+  before_save :perform_withdrawal!
   
   # Withdraws the amount from its account. Parent
   # errors are merged in order to rollback if parent 
