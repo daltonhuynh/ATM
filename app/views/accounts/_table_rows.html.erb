@@ -1,6 +1,6 @@
 <div id="accounts-table-rows">
-	<% @withdrawals.each do |t| %>
-		<div id="<%= t.id %>" class="table-row <%= 'gray' if t.id % 2 == 0 %>">
+	<% @withdrawals.each_with_index do |t, i| %>
+		<div id="<%= t.id %>" class="table-row <%= 'gray' if i % 2 == 0 %>">
 			<div><%= t.class %></div>
 			<div><%= number_to_currency(t.amount) %></div>
 			<div><%= "#{time_ago_in_words(t.created_at)}" %></div>

@@ -2,8 +2,8 @@
 
 <div class="wrap">
 	<div id="account-index-list">
-		<% @accounts.each do |a| %>
-		  <%= render :partial => "account", :locals => {:a => a} %>
+		<% @accounts.each_with_index do |a, i| %>
+		  <%= render :partial => "account", :locals => {:a => a, :i => i} %>
 		<% end %>
 	
 		<div class="show-balance">
