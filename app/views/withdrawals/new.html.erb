@@ -1,0 +1,12 @@
+<h3>New Withdrawal</h3>
+
+<div class="wrap">
+	<div class="show-balance">
+		<p>Current Balance: <%= number_to_currency @account.balance %></p>
+	</div>
+
+	<%= render :partial => "form" %>
+	
+</div>
+
+<%= link_to "Back", accounts_path, :class => "ui-button-link medium" %>

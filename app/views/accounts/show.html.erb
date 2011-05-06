@@ -1,0 +1,23 @@
+<h3><%= @account.name %></h3>
+
+<div class="wrap">
+	<div class="show-balance">
+		<p><b>Current Balance:</b> <%= number_to_currency(@account.balance) %></p>
+	</div>
+	
+	<h4>History</h4>
+	<% if @withdrawals.empty? %>
+		<p>No recent activity</p>
+	<% else %>
+	  <div id="accounts-show-table">
+  	  <div id="table-header" class="table-row">
+  			<div>Type</div>
+  			<div><b><%= link_to "Amount", account_path(@account, :sort => "amount"), :remote => true %></b></div>
+  			<div><b><%= link_to "Time ago", account_path(@account, :sort => "time"), :remote => true %></b></div>
+  		</div>
+  		<%= render :partial => "table_rows", :locals => {:withdrawals => @withdrawals }%>
+  	</div>
+	<% end %>
+</div>
+
+<%= link_to "Back", accounts_path, :class => "ui-button-link medium" %>

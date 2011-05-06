@@ -1,0 +1,11 @@
+<div class="accounts-index-item">
+	<div class="accounts-index-item-vals">
+ 		<p><b>ID:</b> <%= a.id %></p>
+    <p><b>Name:</b> <%= a.name %></p>
+    <p><b>Balance:</b> <%= number_to_currency(a.balance) %></p>
+	</div>
+	<div class="accounts-index-item-nav">
+		<%= link_to "Details", a, :class => "ui-button-link medium" %>
+		<%= link_to "New Withdrawal", new_account_withdrawal_path(a), :class => "ui-button-start medium" %>
+	</div>
+</div>

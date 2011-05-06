@@ -1,0 +1,17 @@
+<div id="sessions-new-login">
+	<h3>ATM</h3>
+
+	<%= form_for(:session, :url => sessions_path) do |f| %>
+	  <div class="field">
+	    <%= f.label :name %><br />
+	    <%= f.text_field :name, :maxlength => 30, :autocomplete => :off, :size => 30, :class => "text-field", :id => "name" %>
+	  </div>
+	  <div class="field">
+	    <%= f.label :pin %><br />
+	    <%= f.password_field :pin, :maxlength => 4, :size => 30, :class => "text-field", :id => "pin" %>
+	  </div>
+	  <div class="actions">
+	    <%= f.submit "Log in", :class => "ui-button-start medium" %>
+	  </div>
+	<% end %>		
+</div>

@@ -1,0 +1,23 @@
+<% if @errors %>
+	<div id="error-explanation">
+	   <h4><%= pluralize(@errors.count, "error") %> occurred:</h4>
+		<ul>
+			<% @errors.full_messages.each do |msg| %>
+				<li><%= msg %></li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
+
+<%= form_for(@withdrawal, :url => account_withdrawals_path(@withdrawal.account.id)) do |f| %>
+	
+	<div class="field">
+		<%= f.label :amount %><br />
+		<%= f.text_field :amount, :autocomplete => :off, :class => "text-field", :maxlength => 30, :id => "amount" %>
+	</div>
+  
+	<div class="actions">
+		<%= f.submit "Complete", :class => "ui-button-action medium" %>
+	</div>
+
+<% end %>

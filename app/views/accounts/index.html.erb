@@ -1,0 +1,16 @@
+<h3><%= "#{@current_user.name}'s accounts" %></h3>
+
+<div class="wrap">
+	<div id="account-index-list">
+		<% @accounts.each do |a| %>
+		  <%= render :partial => "account", :locals => {:a => a} %>
+		<% end %>
+	
+		<div class="show-balance">
+			<p><b>Total funds:</b> <%= number_to_currency(@accounts.reduce(0){|result, x| result + x.balance}) %></p>
+		</div>
+
+	</div>
+	
+	<%= link_to "Log Out", logout_path, :class => "ui-button-action medium" %>
+</div>
