@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  skip_before_filter :authorize
   
   MAX_ATTEMPTS = 3
   LOCK_OUT_TIME_SECS = 30 # number of seconds max_attempts allowed
@@ -11,27 +12,27 @@ class SessionsController < ApplicationController
   end
   
   def create    
-    name = params[:session][:name]
-    pin = params[:session][:pin]
     
     ip = request.remote_ip # Visitor IP
-    last_attempts = LoginAttempt.attempts_secs_ago(ip, LOCK_OUT_TIME_SECS)
+    remainder = LoginAttempt.attempts_remaining(ip, LOCK_OUT_TIME_SECS, MAX_ATTEMPTS)
     
-    if last_attempts.count < MAX_ATTEMPTS
+    if remainder > 0
+      
+      name = params[:session][:name]
+      pin = params[:session][:pin]
+      
       person = Person.authenticate(name, pin)
       if person
         session[:person_id] = person.id
         redirect_to accounts_path
         return
+      else
+        LoginAttempt.create(:ip => ip)
+        notice = remainder > 1 ? "Incorrect Name/Pin. #{remainder - 1} attempt(s) remaining" : 
+                                 "#{LOCK_OUT_TIME_SECS} seconds remaining until next retry"
       end
-    end
-        
-    if last_attempts.count + 1 < MAX_ATTEMPTS
-      LoginAttempt.create({:ip => ip})
-      notice = "Incorrect Name/Pin. #{MAX_ATTEMPTS - last_attempts.count} attempt(s) remaining"    
     else
-      time_remaining = (last_attempts.first.created_at + LOCK_OUT_TIME_SECS.seconds) - Time.now
-      notice = "#{time_remaining.to_i} seconds remaining until next retry"      
+      notice = "#{LoginAttempt.secs_remaining(ip, LOCK_OUT_TIME_SECS).to_i} seconds remaining until next retry"
     end
         
     flash[:notice] = notice
@@ -42,4 +43,5 @@ class SessionsController < ApplicationController
     reset_session
     redirect_to root_path
   end
+
 end
