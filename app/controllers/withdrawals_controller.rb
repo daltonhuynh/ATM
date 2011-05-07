@@ -1,9 +1,9 @@
 class WithdrawalsController < ApplicationController
-  before_filter :authorize
+  before_filter :authorize_account
 
   def new
     @withdrawal = Withdrawal.new
-    @withdrawal.account = Account.find(params[:account_id])
+    @withdrawal.account = @account
   end
 
   def create
@@ -20,9 +20,9 @@ class WithdrawalsController < ApplicationController
     
 protected
     
-  def authorize
-    @account = Account.find(params[:account_id])
-    redirect_to root_path unless current_user && current_user.accounts.include?(@account)
+  def authorize_account
+    @account = Account.find(params[:account_id])  
+    redirect_to accounts_path unless current_user.accounts.exists?(@account)
   end
 
 end
