@@ -4,9 +4,9 @@ class WithdrawalObserver < ActiveRecord::Observer
   # proceding with the transaction. Else, merges errors into 
   # Withdrawal
   def before_save(withdrawal)
-    only = AtMachine.first
     
-    only.transaction do 
+    AtMachine.transaction do 
+      only = AtMachine.first
       only.cash += -1 * withdrawal.amount
       result = only.save
 

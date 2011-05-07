@@ -15,10 +15,8 @@ class Withdrawal < ActiveRecord::Base
   # Withdraws the amount from its account. Parent
   # errors are merged in order to rollback if parent 
   # validation fails
-  def perform_withdrawal!
-    account = self.account
-    
-    account.transaction do
+  def perform_withdrawal!    
+    self.account.transaction do
       self.account.balance += -1 * self.amount
     
       result = self.account.save
