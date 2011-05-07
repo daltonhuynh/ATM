@@ -16,13 +16,17 @@ class Withdrawal < ActiveRecord::Base
   # errors are merged in order to rollback if parent 
   # validation fails
   def perform_withdrawal!
-    self.account.balance += -1 * self.amount
+    account = self.account
     
-    result = self.account.save
-    unless result
-      errors.merge!(self.account.errors)
+    account.transaction do
+      self.account.balance += -1 * self.amount
+    
+      result = self.account.save
+      unless result
+        errors.merge!(self.account.errors)
+      end
+      result
     end
-    result
   end
   
 end

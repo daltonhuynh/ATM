@@ -5,13 +5,17 @@ class WithdrawalObserver < ActiveRecord::Observer
   # Withdrawal
   def before_save(withdrawal)
     only = AtMachine.first
-    only.cash += -1 * withdrawal.amount
-    result = only.save
+    
+    only.transaction do 
+      only.cash += -1 * withdrawal.amount
+      result = only.save
 
-    unless result
-      withdrawal.errors.merge!(only.errors)
+      unless result
+        withdrawal.errors.merge!(only.errors)
+      end
+      
+      result  
     end
-    result
   end
   
 end
