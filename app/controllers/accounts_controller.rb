@@ -1,31 +1,31 @@
 class AccountsController < ApplicationController
-  before_filter :authorize
+  before_filter :authorize_account, :only => :show
   
   def index    
-    @current_user = current_user
-    @accounts = current_user.accounts.sort{|x, y| x.id <=> y.id}
+    @accounts = current_user.accounts
   end
   
   def show
-    @account = Account.find(params[:id])  
-    
-    unless current_user.accounts.include?(@account)
-      redirect_to root_path 
-      return
-    end
     
     sort = params[:sort]
     
     if sort.nil? || sort == "time"
-      @withdrawals = @account.withdrawals.sort {|x, y| y.created_at <=> x.created_at}
+      @withdrawals = @account.withdrawals.all(:order => 'created_at DESC')
     else
-      @withdrawals = @account.withdrawals.sort {|x, y| x.amount <=> y.amount}
+      @withdrawals = @account.withdrawals.all(:order => 'amount ASC')
     end
     
     respond_to do |format|
       format.html
       format.js
     end
+  end
+  
+protected 
+
+  def authorize_account
+    @account = Account.find(params[:id])  
+    redirect_to accounts_path unless current_user.accounts.exists?(@account)
   end
 
 end

@@ -3,13 +3,13 @@ require 'spec_helper'
 describe AccountsController do
 
   describe "GET index" do
-    context "authrorized" do
+    context "authorized" do
       it "renders the accounts index" do
-                
-        current_user = Person.new
-        controller.stub!(:current_user).and_return(current_user)
+        controller.stub(:authorize)
+        controller.stub(:authorize_account)
         
-        current_user.should_receive(:accounts).and_return([])
+        controller.stub(:current_user).and_return(Person.new)
+        controller.stub_chain(:current_user, :accounts, :exists).and_return(true)
         
         get :index
         response.should render_template(:index)
@@ -29,12 +29,10 @@ describe AccountsController do
     context "authorized" do
       it "renders the account history" do
         
-        current_user = Person.new
-        current_user.stub_chain(:accounts, :include?).and_return(true)
-        controller.stub!(:current_user).and_return(current_user)
-        
-        current_account = Account.new
-        Account.should_receive(:find).and_return(current_account)
+        assigns(:account).stub_chain(:withdrawals, :all).and_return(stub_model(Withdrawal))
+
+        controller.stub(:authorize)
+        controller.stub(:authorize_account)   
         
         get :show, :id => 1
         

@@ -3,7 +3,8 @@ class Person < ActiveRecord::Base
   attr_accessible :name
   attr_protected :pin_salt, :pin_hash
   
-  has_many :accounts, :dependent => :destroy
+  has_many :accounts, :dependent => :destroy,
+                      :order => 'id ASC'
   
   validates_presence_of :name
   validates_presence_of :pin_salt, :pin_hash
