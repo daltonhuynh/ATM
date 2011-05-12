@@ -25,7 +25,7 @@ protected
 
   def authorize_account
     @account = Account.find(params[:id])  
-    redirect_to accounts_path unless current_user.accounts.exists?(@account)
+    redirect_to accounts_path unless @account.person == current_user
   end
 
 end

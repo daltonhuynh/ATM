@@ -21,8 +21,8 @@ class WithdrawalsController < ApplicationController
 protected
     
   def authorize_account
-    @account = Account.find(params[:account_id])  
-    redirect_to accounts_path unless current_user.accounts.exists?(@account)
+    @account = Account.find(params[:account_id])
+    redirect_to accounts_path unless @account.person == current_user
   end
 
 end
