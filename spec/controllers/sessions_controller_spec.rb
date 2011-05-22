@@ -13,8 +13,8 @@ describe SessionsController do
     context "user is signed in" do
       it "redirects to the accounts page" do
         
-        current_user = Person.new
-        controller.stub!(:current_user).and_return(current_user)
+        current_user = stub_model(Person)
+        controller.stub(:current_user).and_return(current_user)
       
         get :new 
         response.should redirect_to(:controller => "accounts", :action => "index")

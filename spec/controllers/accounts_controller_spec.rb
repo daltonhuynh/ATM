@@ -8,7 +8,7 @@ describe AccountsController do
         controller.stub(:authorize)
         controller.stub(:authorize_account)
         
-        controller.stub(:current_user).and_return(Person.new)
+        controller.stub(:current_user).and_return(stub_model(Person))
         controller.stub_chain(:current_user, :accounts, :exists).and_return(true)
         
         get :index

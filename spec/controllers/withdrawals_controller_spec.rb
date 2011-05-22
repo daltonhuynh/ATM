@@ -19,7 +19,7 @@ describe WithdrawalsController do
         controller.stub(:authorize)
         controller.stub(:authorize_account)
         
-        @stub_withdrawal = Withdrawal.new
+        @stub_withdrawal = stub_model(Withdrawal)
       end
         
       it "redirects to the index on successful save" do
